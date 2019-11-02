@@ -1,0 +1,41 @@
+{% extends "home/layout.html.twig" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+    {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+        <div class="content-posts">
+            <h1>Tous les posts</h1>
+            {% include "home/wall.html.twig" %}
+        </div>
+        <div class="container-btn-load-more">
+            <button class="center load-more shadow-sm">Charger plus</button>
+        </div>  
+    {% else %}
+        <h1>Page d'accueil</h1>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    var offsetPost = 5;
+    document.querySelector(".load-more").addEventListener("click", function() {
+        offsetPost += 5;
+        const posthttp = new XMLHttpRequest();
+        posthttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                document.querySelector(".content-posts").innerHTML += this.response;
+                if (this.response === "") {
+                    document.querySelector(".load-more").remove(); 
+                }
+            }
+        }
+		posthttp.open("POST", "/loadPosts/"+offsetPost, true);
+		posthttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		posthttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        posthttp.send();
+    });
+</script>
+{% endblock %}

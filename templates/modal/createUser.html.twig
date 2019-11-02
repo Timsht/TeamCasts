@@ -1,0 +1,11 @@
+{{ form_start(formCreateUser, {"action": path("create-user")}) }}
+	{{ form_row(formCreateUser.username) }}
+	{{ form_row(formCreateUser.email) }}
+	{# {{ form_row(formCreateUser.roles) }} #}
+	{{ form_row(formCreateUser.password) }}
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		<input type="submit" class="btn btn-primary" value="Créer">
+	</div>
+{{ form_end(formCreateUser) }}

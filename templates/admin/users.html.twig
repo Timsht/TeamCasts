@@ -1,0 +1,103 @@
+{% extends "admin/layout.html.twig" %}
+
+{% block title %}Admin - Users{% endblock %}
+
+{% block content %}
+	<input id="search_user_admin" type="text" placeholder="Username"><span><i id="search-user-admin" class="fa fa-search"></i></span>
+
+	<table class="table table-striped table-hover">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Username</th>
+				<th scope="col">Email</th>
+				<th scope="col">Date</th>
+				<th scope="col"><i class="far fa-trash-alt"></i></th>
+				<th scope="col"><i class="fas fa-pencil-alt"></i></th>
+			</tr>
+		</thead>
+		<tbody id="search-result"></tbody>
+		<tbody id="default-result">
+			{% for user in pagination %}
+				<tr>
+					<th scope="row">{{ user.id }}</th>
+					<td>{{ user.username }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.date|date("d/m/Y") }}</td>
+					{% if is_granted("ROLE_SUPER_ADMIN") and "ROLE_SUPER_ADMIN" not in user.roles %}
+						<td><a href="{{ path("app_delete", {"id":user.id}) }}" class="delete"><i class="far fa-trash-alt"></i></a></td>
+					{% else %}
+						<td><i class="far fa-trash-alt"></i></td>
+					{% endif %}
+					{% if is_granted("ROLE_SUPER_ADMIN") and "ROLE_SUPER_ADMIN" not in user.roles %}
+						<td><a href="" data-adminedit="{{ path("admin_edit_user", {"id":user.id}) }}" class="edit" data-toggle="modal" data-target="#modalAdmin"><i class="fas fa-pencil-alt"></i></a></td>
+					{% else %}
+						<td><i class="fas fa-pencil-alt"></i></td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+			<tr>
+				<th scope="row">#</th>
+				<td colspan="5">
+					<a href="{{ path("create-user") }}" id="create-new-user" data-toggle="modal" data-target="#modalAdmin">
+						Créer un nouvel utilisateur
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	{{ knp_pagination_render(pagination) }}
+	<div id="modal-container">
+		{% include "modal/baseModal.html.twig" %}
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset("js/admin_edit_user.js") }}"></script>
+	<script>
+		function debounce(callback, delay){
+			var timer;
+			return function(){
+				var context = this;
+				clearTimeout(timer);
+				timer = setTimeout(function(){
+					callback.call(context);
+				}, delay)
+			}
+		}
+
+		$("#search_user_admin").on("input", debounce(function(){
+			if (this.value.length > 1) {
+				$("#search-user-admin").addClass("fas").addClass("fa-spinner").addClass("fa-pulse");
+				setTimeout(() => {
+					$("#load").remove();
+						$query = this.value;
+						$.ajax({
+							type: "GET",
+							url: "{{path('search_user')}}"+"?query="+$query,
+							success: function(response){
+								$("#default-result").hide();
+								$("#search-result").show();
+								$("#search-result").html(response);
+								$(".pagination").hide();
+
+								document.querySelectorAll(".admin-main .edit").forEach(function(element){
+									element.addEventListener("click", editUser);
+								});
+							}
+						}).done(function(){
+							$("#search-user-admin").addClass("fa-search");
+							$("#search-user-admin").removeClass("fa-pulse");
+						});	
+				}, 1000)
+			} else {
+				$("#search-result").hide("");
+				$("#search-result").html("");
+				$("#default-result").show();
+				$(".pagination").show();
+				$("#search-user-admin").addClass("fa-search");
+				$("#search-user-admin").removeClass("fa-pulse");
+			}
+		}, 500));
+	</script>
+{% endblock %}

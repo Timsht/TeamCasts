@@ -1,0 +1,24 @@
+{% extends "admin/layout.html.twig" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+	<div class="dashboard container-fluid">
+		<div class="cards-resume">
+			<ul>
+				<li>
+					<div class="card">{{ users }} users</div>
+				</li>
+				<li>
+					<div class="card">{{ posts }} posts</div>
+				</li>
+				<li>
+					<div class="card">{{ friendships }} friendships</div>
+				</li>
+				<li>
+					<div class="card">{{ group }} groups</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+{% endblock %}

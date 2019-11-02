@@ -1,0 +1,66 @@
+{% extends "user/layout.html.twig" %}
+
+{% block title %}Amis{% endblock %}
+
+{% block content %}
+<ul class="list-friends">
+    {% if user == app.user %}
+        {% for friendship in user.friendships %}
+            {% if friendship.ask == user %}
+                {% set friend = friendship.receive %}
+            {% else %}
+                {% set friend = friendship.ask %}
+            {% endif %}
+            <li>
+                <div class="card">
+                    <div class="card-header">
+                        <img src="https://dummyimage.com/30x30/777/fff" class="rounded-circle" alt="">
+                        <a href="{{ path("app_profil", {"slug":friend.slug}) }}">{{ friend.username}}</a>
+                        {% if friend.id in friends %}
+                            {% if friendship.valide == true %}
+                                <div class="dropleft float-right">
+                                    <div id="manage-friend-{{friend.slug}}" class="setting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </div>
+                                    <div class="dropdown-menu manage-friend" aria-labelledby="manage-friend-{{friend.slug}}">
+                                        <button class="dropdown-item del-friend" data-user="{{ path("app_manage", { "id": friend.id }) }}">Supprimer ami <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <button type="button" class="waiting-request float-right" data-toggle="tooltip" data-placement="left" title="Demande en attente">
+                                    <i class="fas fa-question"></i>
+                                </button>  
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">{{ friend.date|date("d F Y") }}.</p>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    {% else %}
+        {% for friend in user.friends %}
+            <li>
+                <div class="card">
+                    <div class="card-header">
+                        <img src="https://dummyimage.com/30x30/777/fff" class="rounded-circle" alt="">
+                        <a href="{{ path("app_profil", {"slug":friend.slug}) }}">{{ friend.username}}</a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">{{ friend.date|date("d F Y") }}.</p>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    {% endif %}
+</ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset("js/delete_friend.js") }}"></script>
+{% endblock %}

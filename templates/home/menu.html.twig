@@ -1,0 +1,17 @@
+<li class="nav-item">
+    <button class="btn btn-default btn-dropdown" id="dropdown-friend-menu" data-toggle="dropdown">
+    Demandes d'amis
+    {% if friend_request | length > 0 %}
+        <span id="count-request-friend">{{ friend_request | length }}</span>
+    {% endif %}
+    <span class="caret-dropdown"></span>
+    <ul class="dropdown shadow">
+        {% if friend_request | length > 0 %}
+            {% for friend in friend_request %}
+                <a class="action-friend" href="/user/{{ friend.ask.id }}/friend"><li>{{ friend.ask.username }}</li></a>
+            {% endfor %}
+        {% else %}
+            <li>Aucune nouvelle requête</li>
+        {% endif %}
+    </ul>
+</button></li>

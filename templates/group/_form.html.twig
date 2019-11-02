@@ -1,0 +1,8 @@
+{{ form_start(form) }}
+    {{ form_label(form.name, 'Nom du groupe') }}
+    {{ form_widget(form.name) }}
+    {{ form_label(form.valide, 'Visible')}}
+    {{ form_widget(form.valide)}}
+        
+    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

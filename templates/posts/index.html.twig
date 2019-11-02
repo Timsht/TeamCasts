@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <article class="posts-profil">
+        <div class="post">
+            <div class="d-flex flex-row top-post">
+                <h5>{{ post.author.username }}</h5>
+                <span class="date">{{ post.date|date("d/m/Y") }}</span>
+                {% if app.user == post.author or app.user == post.user %}
+                    <a class="delete del-post" aria-hidden="true">&times;</a>
+                {% endif %}
+            </div>
+            <p>{{ post.post }}</p>
+            <div class="separator"></div>
+        </div>
+    </article>
+{% endblock %}

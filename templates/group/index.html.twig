@@ -1,0 +1,51 @@
+{% extends 'group/layout.html.twig' %}
+
+{% block title %}Groupe{% endblock %}
+
+{% block content %}
+    <aside class="col-md-2 p-0">
+        <ul>
+            <a href="{{ path("group_index") }}"><li class="nav-link {{ app.request.get('_route') == 'group_index' ? 'active' : '' }}"><span>Mes groupes</span></li></a>
+            <a href="{{ path("all_groups") }}"><li class="nav-link {{ app.request.get('_route') == 'all_groups' ? 'active' : '' }}"><span>Tout les groupes</span></li></a>
+        </ul>
+    </aside>
+    <section class="col-md-10">
+        <div class="d-flex flex-row rel">
+            <h1>Group index</h1>
+            <div class="abs btm-10 right-10">
+                <a type="button" class="btn btn-success shadow-sm" href="{{ path('group_new') }}">Create new</a>
+            </div>
+        </div>
+
+        <table class="table table-hover table-sm center group-table">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>Date de création</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for group in groups %}
+            <tr data-href="{{ path('group_show', {'id': group.id}) }}">
+                    <td>{{ group.id }}</td>
+                    <td>{{ group.name }}</td>
+                    <td>{{ group.date ? group.date|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <button type="button" data-group="{{ path("manage_group", {'id':group.id}) }}" class="btn manager-group-btn {{ group in app.user.groups ? "btn-info" : "btn-light" }}" {{ group.author == app.user ? "disabled" : "" }}>{{ group in app.user.groups ? "Ne plus suivre" : "Spy" }}</button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">Pas de groupe trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset("js/manageGroup.js") }}"></script>
+{% endblock %}

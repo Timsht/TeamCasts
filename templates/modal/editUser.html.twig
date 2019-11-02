@@ -1,0 +1,16 @@
+{{ form_start(formEditUser, {"action": path("admin_edit_user", {"id": userEdit.id})}) }}
+	{{ form_row(formEditUser.email) }}
+	{{ form_row(formEditUser.roles, {
+		'label': 'Roles',
+		'attr': {
+            'class': 'foo'
+		},
+        'placeholder': 'Select a role'
+	}) }}
+	{# {{ form_row(formEditUser.roles.vars.prototype) }} #}
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		<input type="submit" class="btn btn-primary edit-btn" value="Modifier">
+	</div>
+{{ form_end(formEditUser) }}

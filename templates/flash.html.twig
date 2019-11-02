@@ -1,0 +1,9 @@
+ {% for message in app.flashes("success") %}
+    {{ message|raw }}
+{% endfor %}
+{% for message in app.flashes('fail') %}
+    {{ message|raw }}
+{% endfor %}
+{% for message in app.flashes('warning') %}
+    {{ message|raw }}
+{% endfor %}

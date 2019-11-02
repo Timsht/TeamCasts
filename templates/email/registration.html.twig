@@ -1,0 +1,8 @@
+<h3>You did it! You registered!</h3>
+
+Hi {{ user.username }}! You're successfully registered.
+
+{# example, assuming you have a route named "login" #}
+To login, go to: <a href="{{ path("app_profil", { 'slug': user.slug })}}">{{ user.username }}</a>.
+
+Thanks!

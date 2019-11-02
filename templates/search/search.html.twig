@@ -1,0 +1,8 @@
+{{ form_start(search_form, {'action': path('app_result_search'), 'method': 'GET'}) }}
+    <div class="form-search">
+        {{ form_widget(search_form.username, {'attr': {'minlength': '2'}}) }}
+        <button type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+{{ form_end(search_form) }}

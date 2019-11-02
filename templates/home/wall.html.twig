@@ -1,0 +1,11 @@
+{% for post in friendsPosts %}
+	<div class="post">
+		<p>
+			{% if post.user != post.author %}
+				<a href="{{ path("app_profil", {"slug": post.author.slug}) }}">{{ post.author.username }}</a> <i class="fas fa-caret-right"></i>
+			{% endif %}
+			<a href="{{ path("app_profil", {"slug": post.user.slug}) }}">{{ post.user.username }}</a><small class="ml-3 text-muted">{{ post.date|date("d/m/Y h:i:s") }}</small>
+		</p>
+		{{ post.post }}
+	</div>
+{% endfor %}

@@ -1,0 +1,44 @@
+{% extends "user/layout.html.twig" %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+<section class="main-profil">
+    <article class="form-profil">
+        {# Friendship doesn't exist on user which are not friend #}
+        {% if user.id in friends and friendship.valide == true or user == app.user %}
+            {{ form_start(formPost) }}
+            {{ form_errors(formPost.post) }}
+            {{ form_widget(formPost.post) }}
+                <input class="btn btn-default" type="submit">
+            {{ form_end(formPost) }}
+        {% endif %}
+    </article>
+    <article class="posts-profil">
+        {% for post in posts %}
+            <div class="post">
+                <div class="d-flex flex-row top-post">
+                    <h5>{{ post.author.username }}</h5>
+                    <span class="date">{{ post.date|date("d/m/Y") }}</span>
+                    {% if app.user == post.author or app.user == post.user %}
+                        <a href="{{ path("delete_post", {"id": post.id}) }}" class="delete del-post" aria-hidden="true">&times;</a>
+                    {% endif %}
+                </div>
+                <p>{{ post.post }}</p>
+                <div class="separator"></div>
+            </div>
+        {% endfor %}
+    </article>
+</section>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    // Textarea form profil
+    let txtFormPost = document.querySelector(".form-profil textarea");
+    let btnSubmitPost = document.querySelector(".form-profil input[type='submit']").offsetHeight;
+
+    txtFormPost.style.paddingBottom = btnSubmitPost + "px";
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "search/layout.html.twig" %}
+
+{% block title %}Recherche{% endblock %}
+
+{% block content %}
+<h1>Resultat</h1>
+<ul class="container-cards">
+    {% if users|length < 1 %}
+        <li class="alert alert-warning w-100">  
+            Aucun résultat
+        </li>  
+    {% endif %}
+    {% for user in users %}
+        {% if user != app.user %}
+        <li>
+            <a href="{{ path("app_profil", { 'slug': user.slug }) }}">
+                <div class="card">
+                    <img class="card-img-top" src="https://dummyimage.com/600x400/777/fff" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="top-car-body d-flex flex-wrap justify-content-between">
+                            <h5 class="card-title">{{ user.username }}</h5>
+                            {% if user.id not in friends and is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <button data-usr="{{ path("add_friend", {"id": user.id}) }}" class="btn-add-friend-list">Ajouter</button>
+                            {% endif %}
+                        </div>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+            </a>
+        </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset("js/btn_add_friend.js") }}"></script>
+{% endblock %}

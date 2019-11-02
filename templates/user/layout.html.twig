@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="container h-100">
+        <section>
+            <div class="mb-3">
+                <img alt="Card image cap" class="card-img-top" src="https://dummyimage.com/1200x250/777/fff">
+                <div class="card-body">
+                    <div class="card-profil-picture d-flex flex-row">
+                        <img alt="User picture" class="rounded-circle border" src="https://dummyimage.com/90x90/fff/000">
+                        <h5 class="card-title">
+                            <a href="{{ path('app_profil', { 'slug': user.slug }) }}">{{ user.username }}</a>
+                            {% if user.id not in friends and user != app.user %}
+                                <button data-usr="{{ path("add_friend", {"id": user.id}) }}" class="btn-add-friend-list">Ajouter</button>
+                            {% endif %}
+                        </h5>
+                    </div>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
+        </section>
+        <div class="row">
+            <aside class="col-md-2 p-0">
+                <ul class="list-group list-group-flush">
+                    <a href="{{ path("app_friendsList", { 'slug': user.slug}) }}">
+                        <li class="nav-link">
+                            {% if user == app.user %}
+                                Amis ({{ user.friends | length }})
+                            {% else %}
+                                Amis de {{ user.username }}({{ user.friends | length }})
+                            {% endif %}
+                        </li>
+                    </a>
+                </ul>
+            </aside>
+            <div class="col-md-10">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset("js/btn_add_friend.js") }}"></script>
+{% endblock %}

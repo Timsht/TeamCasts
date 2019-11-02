@@ -1,0 +1,49 @@
+{% extends "user/layout.html.twig" %}
+
+{% block title %}Configuration{% endblock %}
+
+{% block content %}
+	{{ form_start(formUser) }}
+		{{ form_errors(formUser) }}
+
+
+		<div class="form-group row">
+			<label for="inputUsername" class="col-sm-3 col-form-label">
+				{{ form_label(formUser.username) }}
+			</label>
+			<div class="col-sm-9">
+				{{ form_widget(formUser.username) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			<label for="inputUsername" class="col-sm-3 col-form-label">
+				{{ form_label(formUser.email) }}
+			</label>
+			<div class="col-sm-9">
+				{{ form_widget(formUser.email) }}
+			</div>
+		</div>
+		
+		<input class="btn btn-primary" type="submit" value="Modifier">
+	{{ form_end(formUser) }}
+	
+	{{ form_start(formPasswordUser)}}
+		{% for passwordField in formPasswordUser.password %}
+			<div class="form-group row">
+				<label for="inputUsername" class="col-sm-3 col-form-label">
+					{{ form_label(passwordField) }}
+				</label>
+				<div class="col-sm-9">
+					{{ form_widget(passwordField) }}
+				</div>
+			</div>
+		{% endfor %}
+		<input class="btn btn-primary" type="submit" value="Modifier">
+	{{ form_end(formPasswordUser)}}
+
+	<div class="form-group row">
+		<div class="col-sm-9">
+			<a href="{{ path("app_delete", {"id": app.user.id}) }}" class="btn btn-danger">Supprimer le compte</a>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block title %}Welcome!
+            {% endblock %}
+        </title>
+        <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/da5a488765.js"></script>
+        <link rel="stylesheet" href="{{ asset("css/style.css") }}">
+        <link rel="shortcut icon" href="about:blank">
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <header class="d-flex shadow-sm bg-white">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container">
+                    <a class="navbar-brand" href="{{ path("homepage") }}">TeamCasts</a>
+                    <ul class="navbar-nav">
+                        {{ render(controller(
+                            "App\\Controller\\SearchController::search"
+                        )) }}
+                        {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+                            {{ render(controller(
+                                "App\\Controller\\UserController::numberAskFriend",
+                                { 'max':5 }
+                            )) }}
+                            <li class="nav-item">
+                                <button class="btn btn-default btn-dropdown profil" type="button">
+                                    <span class="text-btn-dropdown-profil">
+                                        <i class="fas fa-user"></i>{{ app.user.username }}</span>
+                                    <span class="caret-dropdown"></span>
+                                    <ul class="dropdown dropdown-menu-profil shadow">
+                                        <a href="{{ path("app_profil", { 'slug': app.user.slug }) }}">
+                                            <li><i class="fas fa-user"></i>Profil</li>
+                                        </a>
+                                        <a href="{{ path("app_friendsList", { 'slug': app.user.slug}) }}">
+                                            <li><i class="fas fa-user-friends"></i>Amis</li>
+                                        </a>
+                                        <a href="{{ path("group_index") }}">
+                                            <li><i class="fas fa-users"></i>Groupes</li>
+                                        </a>
+                                        {% if is_granted("ROLE_ADMIN") %}
+                                            <div class="separator"></div>
+                                                <a href="{{ path("admin_dashboard") }}">
+                                                <li><i class="fas fa-user-lock"></i>Admin Dashboard</li>
+                                            </a>
+                                        {% endif %}
+                                        <div class="separator"></div>
+                                        <a href="{{ path("app_config") }}">
+                                            <li><i class="fas fa-user-cog"></i>Paramètres</li>
+                                        </a>
+                                        <div class="separator"></div>
+                                        <a href="{{ path("app_logout") }}">
+                                            <li><i class="fas fa-power-off"></i>Déconnexion</li>
+                                        </a>
+                                    </ul>
+                                </button>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path("app_register") }}">Inscription</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        <footer>
+            <div class="container">
+                <p class="text-center">ceci est le footer</p>
+            </div>
+        </footer>
+        <div class="container-notif"></div>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="{{ asset("js/flash_message.js") }}"></script>
+        <script src="{{ asset("js/requests_friends.js") }}"></script>
+        <script src="{{ asset("js/styleCss.js") }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

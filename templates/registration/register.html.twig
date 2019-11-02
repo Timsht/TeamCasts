@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/signin.css') }}">
+{% endblock %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div>
+        <div class="text-center">
+            <h1>Inscription</h1>
+        </div>
+
+        {{ form_start(registrationForm, {"attr": {
+            "class":"form-signin shadow-sm"
+        }}) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.username) }}
+            {{ form_row(registrationForm.password) }}
+
+            <button class="btn btn-primary">Inscription</button>
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}
